@@ -84,9 +84,13 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    
     vim
     neovim
+
     hyprland
+    hyprshot
+
     kitty
     nwg-look
     yazi
@@ -105,6 +109,7 @@
     pavucontrol
     wiremix
     mesa-demos
+
     awww.packages.${pkgs.stdenv.hostPlatform.system}.awww
     fetch.packages.${pkgs.system}.default
     wlctl.packages.${pkgs.system}.default

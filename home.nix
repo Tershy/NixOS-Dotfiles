@@ -26,6 +26,7 @@
       hypconf = "nvim /etc/nixos/dotfiles/hypr/hyprland.lua";
       flakeconf = "nvim /etc/nixos/flake.nix";
       homeconf = "nvim /etc/nixos/home.nix";
+      dotconf = "nvim /etc/nixos/dotfiles/";
 
     };
     functions = {

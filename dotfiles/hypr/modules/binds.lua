@@ -7,7 +7,7 @@ local terminal    = "kitty"
 local fileManager = "kitty yazi"
 local menu        = "hyprlauncher"
 local browser     = "zen"
-local editor      = "nvim"
+local editor      = "kitty nvim"
 local hermes      = "kitty hermes"
 
 ---------------------
