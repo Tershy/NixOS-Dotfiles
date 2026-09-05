@@ -91,6 +91,8 @@
     hyprland
     hyprshot
 
+    matugen
+
     kitty
     nwg-look
     yazi
