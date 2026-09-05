@@ -3,12 +3,10 @@
   home.username = "tershy";
   home.homeDirectory = "/home/tershy";
   home.stateVersion = "26.05";
-
   home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
   };
-
   programs.home-manager.enable = true;
 
   # --- fish ---
@@ -22,8 +20,9 @@
       fetch = "nix run github:areofyl/fetch";
       nixrebuild = "sudo nixos-rebuild switch";
       nixconf = "nvim /etc/nixos/configuration.nix";
-      hypconf = "nvim ~/.config/hypr/hyprland.lua";
+      hypconf = "nvim /etc/nixos/dotfiles/hypr/hyprland.lua";
       flakeconf = "nvim /etc/nixos/flake.nix";
+      homeconf = "nvim /etc/nixos/home.nix";
     };
     functions = {
       y = ''
@@ -65,5 +64,25 @@
     extraConfig = ''
       include current-theme.conf
     '';
+  };
+
+  # --- hyprland config files ---
+  # hyprland.lua and its modules are hand-written and stable;
+  # matugen theming will hook in as a separate, ungmanaged colors file
+  # sourced from hyprland.lua, not managed here.
+  xdg.configFile = {
+    "hypr/hyprland.lua".source = ./dotfiles/hypr/hyprland.lua;
+    "hypr/modules/decorations.lua".source = ./dotfiles/hypr/modules/decorations.lua;
+    "hypr/modules/monitors.lua".source = ./dotfiles/hypr/modules/monitors.lua;
+    "hypr/modules/env.lua".source = ./dotfiles/hypr/modules/env.lua;
+    "hypr/modules/windowrules.lua".source = ./dotfiles/hypr/modules/windowrules.lua;
+    "hypr/modules/input.lua".source = ./dotfiles/hypr/modules/input.lua;
+    "hypr/modules/autostart.lua".source = ./dotfiles/hypr/modules/autostart.lua;
+    "hypr/modules/misc.lua".source = ./dotfiles/hypr/modules/misc.lua;
+    "hypr/modules/binds.lua".source = ./dotfiles/hypr/modules/binds.lua;
+    "hypr/modules/layouts.lua".source = ./dotfiles/hypr/modules/layouts.lua;
+
+    # --- yazi ---
+    "yazi/yazi.toml".source = ./dotfiles/yazi/yazi.toml;
   };
 }

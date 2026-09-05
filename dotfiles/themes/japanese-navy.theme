@@ -1,0 +1,33 @@
+# name: Japanese Navy
+# license: MIT
+# preferred_background: 0B1D2F
+# url: https://github.com/Tershy/Quickshell-rice-learn
+fish_color_normal --reset
+fish_color_autosuggestion 55324C
+fish_color_cancel --reverse
+fish_color_command 39A2CA
+fish_color_comment 55324C --italics
+fish_color_cwd 5198C2
+fish_color_cwd_root A43347
+fish_color_end 9A79A3
+fish_color_error A43347
+fish_color_escape C092AB
+fish_color_history_current F0EDEF --bold
+fish_color_host 3FA662
+fish_color_host_remote CBA54D
+fish_color_keyword 5198C2
+fish_color_operator 5198C2
+fish_color_option 39A2CA
+fish_color_param C092AB
+fish_color_quote 3FA662
+fish_color_redirection 9A79A3 --bold
+fish_color_search_match --background=0C304C --bold
+fish_color_selection F0EDEF --background=0C304C --bold
+fish_color_status A43347
+fish_color_user 3FA662
+fish_color_valid_path --underline
+fish_pager_color_completion F0EDEF
+fish_pager_color_description CBA54D --italics
+fish_pager_color_prefix --bold --underline
+fish_pager_color_progress 0C304C --background=A43347 --bold
+fish_pager_color_selected_background --background=0C304C
