@@ -18,11 +18,15 @@
     '';
     shellAliases = {
       fetch = "nix run github:areofyl/fetch";
+
       nixrebuild = "sudo nixos-rebuild switch";
+      homerebuild = "home-manager switch -b backup --flake /etc/nixos#tershy";
+
       nixconf = "nvim /etc/nixos/configuration.nix";
       hypconf = "nvim /etc/nixos/dotfiles/hypr/hyprland.lua";
       flakeconf = "nvim /etc/nixos/flake.nix";
       homeconf = "nvim /etc/nixos/home.nix";
+
     };
     functions = {
       y = ''
