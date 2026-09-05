@@ -23,7 +23,6 @@
       homerebuild = "home-manager switch -b backup --flake /etc/nixos#tershy";
 
       nixconf = "nvim /etc/nixos/configuration.nix";
-      hypconf = "nvim /etc/nixos/dotfiles/hypr/hyprland.lua";
       flakeconf = "nvim /etc/nixos/flake.nix";
       homeconf = "nvim /etc/nixos/home.nix";
       dotconf = "nvim /etc/nixos/dotfiles/";
