@@ -2,7 +2,7 @@
 
 Tershy's NixOS desktop environment, built from scratch with Hyprland + Quickshell.
 
-This is a **learning project**, run in parallel to an existing Arch Linux setup ([`Quickshell-rice-learn`](https://github.com/Tershy/Quickshell-rice-learn)). The two are intentionally independent — no dotfiles are copied between them. Reference repos below are studied as patterns, not copied as sources.
+This is a **learning project**, which used to be only based on the quickshell part ([`Quickshell-rice-learn`](https://github.com/Tershy/Quickshell-rice-learn)). Since i've moved to NixOS from Arch (btw) i've decided to throw my whole system here.
 
 ## Stack
 
@@ -12,6 +12,7 @@ This is a **learning project**, run in parallel to an existing Arch Linux setup 
 | Compositor    | Hyprland 0.56.0, config in native Lua (`hyprland.lua`) |
 | Shell (bar/widgets) | Quickshell v0.3.0 (QML) |
 | Terminal      | kitty |
+| Editor        | nvim (Lazyvim) |
 | Shell (CLI)   | fish |
 | File manager  | yazi |
 | Fonts         | Rubik (UI), Maple Mono NF (terminal / glyphs) |
@@ -48,7 +49,7 @@ There are **two independent rebuild pipelines** — NixOS system config and Home
 | `sudo nixos-rebuild switch --flake /etc/nixos#nixos` | `nixrebuild` | `configuration.nix` — system packages, drivers, services, hardware |
 | `home-manager switch -b backup --flake /etc/nixos#tershy` | `homerebuild` | `home.nix` — fish, kitty, hypr, yazi, quickshell |
 
-The `-b backup` flag renames any pre-existing conflicting file to `.backup` instead of erroring — important since this repo grew out of an already-configured system, not a fresh install.
+The `-b backup` flag renames any pre-existing conflicting file to `.backup` instead of erroring.
 
 ### Editing configs
 
@@ -63,13 +64,13 @@ hypconf    → nvim /etc/nixos/dotfiles/hypr/hyprland.lua
 dotconf    → nvim /etc/nixos/dotfiles/
 ```
 
-### Flake gotcha
+### Flakes
 
-Nix flakes only see **git-tracked** files. Any new file added under this repo must be `git add`-ed (staging is enough — a commit isn't strictly required) before a rebuild will pick it up, or you'll hit "path is not tracked by Git" errors.
+Nix flakes only see **git-tracked** files. Any new file added under this repo must be `git add`-ed (staging is enough) before a rebuild will pick it up, or you'll hit "path is not tracked by Git" errors.
 
 ## Neovim
 
-Deliberately **not** Home Manager-managed. Plain LazyVim, self-bootstrapping via `lazy.nvim`. Left alone since replicating LazyVim's install flow through Nix isn't worth the complexity for a setup that already works.
+Just using Lazyvim, no need to import it here, at least not yet
 
 ## Quickshell + matugen (in progress)
 
@@ -83,11 +84,7 @@ The plan is a dynamic theme switcher: a wallpaper change triggers `matugen`, whi
 
 This is being tracked as a follow-up, not yet functional.
 
-## Architectural principle: HM vs. generated files
-
-Home Manager manages **static, hand-written config**. Anything matugen (or another generator) writes at runtime stays a **plain, writable file** that HM-managed files `source`/`include`/read — never a path HM itself owns. This is why `colors.json` sits in the repo but isn't hardcoded into `home.nix` as an `xdg.configFile` target the same way `Colors.qml` is.
-
-## Reference repos (patterns studied, not copied)
+## Reference repos (patterns studied)
 
 - [end-4/dots-hyprland](https://github.com/end-4/dots-hyprland)
 - [caelestia-dots/shell](https://github.com/caelestia-dots/shell)
