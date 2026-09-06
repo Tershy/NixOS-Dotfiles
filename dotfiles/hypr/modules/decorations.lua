@@ -3,6 +3,17 @@
 -----------------------
 
 -- Refer to https://wiki.hypr.land/Configuring/Basics/Variables/
+
+local colors = { active_border = "#39A2CA", inactive_border = "#345779" }
+local chunk, err = loadfile("/home/tershy/.config/matugen/generated/hyprland-colors.lua")
+if chunk then
+    local ok, result = pcall(chunk)
+    if ok and result then
+        colors = result
+    end
+end
+
+
 hl.config({
     general = {
         gaps_in  = 8,
@@ -11,9 +22,10 @@ hl.config({
         border_size = 2,
 
         col = {
-            active_border   = { colors = {"#39A2CA"} },
-            inactive_border = "#345779",
+            active_border   = colors.active_border,
+            inactive_border = colors.inactive_border,
         },
+
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
         resize_on_border = false,

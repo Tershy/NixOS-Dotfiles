@@ -13,6 +13,9 @@
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
+      if test -f ~/.config/matugen/generated/fish-colors.fish
+        source ~/.config/matugen/generated/fish-colors.fish
+      end
       fastfetch
       set fish_greeting
     '';
@@ -21,6 +24,7 @@
 
       nixrebuild = "sudo nixos-rebuild switch";
       homerebuild = "home-manager switch -b backup --flake /etc/nixos#tershy";
+      dotadd = "cd /etc/nixos && git add -A";
 
       nixconf = "nvim /etc/nixos/configuration.nix";
       flakeconf = "nvim /etc/nixos/flake.nix";
@@ -65,7 +69,6 @@
       window_padding_width = "5";
       background_opacity = "0.8";
       allow_remote_control = "yes";
-      listen_on = "unix:/tmp/kitty-socket";
     };
     extraConfig = ''
       include current-theme.conf
@@ -90,6 +93,13 @@
 
     # --- yazi ---
     "yazi/yazi.toml".source = ./dotfiles/yazi/yazi.toml;
+
+    # --- matugen ---
+    "matugen/config.toml".source = ./dotfiles/matugen/config.toml;
+    "matugen/templates/kitty.conf".source = ./dotfiles/matugen/templates/kitty.conf;
+    "matugen/templates/quickshell-colors.json".source = ./dotfiles/matugen/templates/quickshell-colors.json;
+    "matugen/templates/hyprland-colors.lua".source = ./dotfiles/matugen/templates/hyprland-colors.lua;
+    "matugen/templates/fish-colors.fish".source = ./dotfiles/matugen/templates/fish-colors.fish;
   };
 
   # --- quickshell ---

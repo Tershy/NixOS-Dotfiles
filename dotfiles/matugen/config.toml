@@ -1,0 +1,26 @@
+# Managed by Home Manager (xdg.configFile "matugen/config.toml")
+# Source: dotfiles/matugen/config.toml
+
+[config]
+# We drive wallpaper-setting ourselves (awww, from the switcher),
+# so matugen should not try to set it — just generate + template.
+
+[templates.kitty]
+input_path = "~/.config/matugen/templates/kitty.conf"
+output_path = "~/.config/kitty/current-theme.conf"
+post_hook = "sh -c 'for sock in /tmp/kitty-*; do kitty @ --to unix:$sock set-colors -a ~/.config/kitty/current-theme.conf || true; done'"
+
+[templates.quickshell]
+input_path = "~/.config/matugen/templates/quickshell-colors.json"
+output_path = "~/.config/quickshell/config/generated/colors.json"
+# No post_hook needed — Colors.qml's FileView + watchChanges reloads live on its own.
+
+[templates.hyprland]
+input_path = "~/.config/matugen/templates/hyprland-colors.lua"
+output_path = "~/.config/matugen/generated/hyprland-colors.lua"
+post_hook = "hyprctl reload"
+
+[templates.fish]
+input_path = "~/.config/matugen/templates/fish-colors.fish"
+output_path = "~/.config/matugen/generated/fish-colors.fish"
+# No post_hook — by design, only new shells pick this up (see Stage 2 plan).

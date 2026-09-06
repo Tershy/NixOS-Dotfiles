@@ -1,0 +1,30 @@
+{
+    "crust": "{{ colors.surface_container_lowest.default.hex }}",
+    "base": "{{ colors.background.default.hex }}",
+    "surface0": "{{ colors.surface_container.default.hex }}",
+    "surface1": "{{ colors.surface_container_high.default.hex }}",
+    "overlay": "{{ colors.outline_variant.default.hex }}",
+
+    "subtext0": "{{ colors.outline.default.hex }}",
+    "subtext1": "{{ colors.on_surface_variant.default.hex }}",
+    "text": "{{ colors.on_surface.default.hex }}",
+
+    "red": "{{ colors.error.default.hex }}",
+    "orange": "{{ colors.error_container.default.hex }}",
+    "yellow": "{{ colors.tertiary.default.hex }}",
+    "green": "{{ colors.tertiary_container.default.hex }}",
+    "teal": "{{ colors.secondary.default.hex }}",
+    "sky": "{{ colors.primary.default.hex }}",
+    "blue": "{{ colors.primary_container.default.hex }}",
+    "pink": "{{ colors.tertiary_container.default.hex }}",
+    "mauve": "{{ colors.secondary.default.hex }}",
+
+    "brightRed": "{{ colors.error_container.default.hex }}",
+    "brightGreen": "{{ colors.tertiary_container.default.hex }}",
+    "brightYellow": "{{ colors.tertiary.default.hex }}",
+    "brightBlue": "{{ colors.primary_container.default.hex }}",
+    "brightPink": "{{ colors.tertiary_container.default.hex }}",
+    "brightCyan": "{{ colors.secondary.default.hex }}",
+    "brightWhite": "{{ colors.on_background.default.hex }}",
+    "brightBlack": "{{ colors.surface_container.default.hex }}"
+}

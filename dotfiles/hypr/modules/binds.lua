@@ -3,13 +3,12 @@
 ---------------------
 
 -- Set programs that you use
-local terminal    = "kitty"
-local fileManager = "kitty yazi"
+local terminal    = "kitty --listen-on unix:/tmp/kitty-{kitty_pid}"
+local fileManager = "kitty --listen-on unix:/tmp/kitty-{kitty_pid} yazi"
 local menu        = "hyprlauncher"
 local browser     = "zen"
-local editor      = "kitty nvim"
-local hermes      = "kitty hermes"
-
+local editor       = "kitty --listen-on unix:/tmp/kitty-{kitty_pid} nvim"
+local hermes       = "kitty --listen-on unix:/tmp/kitty-{kitty_pid} hermes"
 ---------------------
 ---- KEYBINDINGS ----
 ---------------------
