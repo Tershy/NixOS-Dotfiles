@@ -64,6 +64,8 @@
       window_margin_width = "5";
       window_padding_width = "5";
       background_opacity = "0.8";
+      allow_remote_control = "yes";
+      listen_on = "unix:/tmp/kitty-socket";
     };
     extraConfig = ''
       include current-theme.conf
