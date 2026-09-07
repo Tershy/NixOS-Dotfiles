@@ -43,12 +43,12 @@ Singleton {
     function setWallpaper(path) {
         root.currentWallpaper = path;
 
-        setWallpaperProcess.command = ["swww", "img", path,
+        setWallpaperProcess.command = ["awww", "img", path,
                                         "--transition-type", "wipe",
                                         "--transition-duration", "1"];
         setWallpaperProcess.running = true;
 
-        matugenProcess.command = ["matugen", "image", path];
+        matugenProcess.command = ["matugen", "image", path, "--source-color-index", "0"];
         matugenProcess.running = true;
     }
 
