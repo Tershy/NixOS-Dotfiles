@@ -27,6 +27,7 @@ Singleton {
     readonly property color surface0: _data.surface0 ?? "#0C304C"
     readonly property color surface1: _data.surface1 ?? "#55324C"
     readonly property color overlay: _data.overlay ?? "#345779"
+    readonly property color barBg: _data.barBg ?? "#1F2937"
 
     // --- Text ------------------------------------------------------------
     readonly property color subtext0: _data.subtext0 ?? "#738CA5"

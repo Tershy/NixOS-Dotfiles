@@ -5,14 +5,15 @@ import qs.modules.app_launcher
 import qs.modules.wallpaper
 
 ShellRoot {
+    
     Bar {}
     AppLauncher {}
-    WallpaperPicker{}
+    WallpaperPicker {}
 
+    // Existing launcher IPC
     IpcHandler {
-        target: "launcher" // musi być unikalne w całej konfiguracji
+        target: "launcher"
 
-        // Typ zwracany jest wymagany — bez ": void" funkcja się nie zarejestruje.
         function toggle(): void {
             AppLauncherState.toggle();
         }
@@ -23,6 +24,23 @@ ShellRoot {
 
         function hide(): void {
             AppLauncherState.hide();
+        }
+    }
+
+    // NEW: Wallpaper Picker IPC
+    IpcHandler {
+        target: "WallpaperState"
+
+        function togglePicker(): void {
+            WallpaperState.togglePicker();
+        }
+
+        function showPicker(): void {
+            WallpaperState.showPicker();
+        }
+
+        function hidePicker(): void {
+            WallpaperState.hidePicker();
         }
     }
 }

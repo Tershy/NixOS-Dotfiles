@@ -1,11 +1,5 @@
-// modules/wallpaper/WallpaperState.qml
-//
-// Singleton trzymający stan "która tapeta jest aktywna" oraz proces,
-// który odpala matugena. To jest analogiczny wzorzec do Twojego
-// AppLauncherState.qml - stan i logika żyją w singletonie, komponenty
-// wizualne (WallpaperPicker.qml) są "głupie" i tylko wołają metody stąd.
-
 pragma Singleton
+import QtQuick
 import Quickshell
 import Quickshell.Io
 
@@ -13,62 +7,92 @@ Singleton {
     id: root
 
     property string currentWallpaper: ""
-
-    // Lista tapet - w realnej wersji chcesz to wypełnić dynamicznie
-    // (np. Process odpalający `find ~/Pictures/Wallpapers -type f`),
-    // ale na start prostszy jest hardcoded model do testów.
     property var wallpapers: []
+    property bool pickerVisible: false
+
+    function togglePicker() {
+        if (pickerVisible) {
+            hidePicker();
+        } else {
+            showPicker();
+        }
+    }
+
+    function showPicker() {
+        scanWallpapers();
+        pickerVisible = true;
+    }
+
+    function hidePicker() {
+        pickerVisible = false;
+    }
+
+    function setWallpaper(path) {
+        root.currentWallpaper = path;
+
+        setWallpaperProcess.command = [
+            "awww", "img", path,
+            "--transition-type", "wipe",
+            "--transition-duration", "1"
+        ];
+        setWallpaperProcess.running = true;
+
+        matugenProcess.command = [
+            "matugen", "image", path,
+            "--source-color-index", "0"
+        ];
+        matugenProcess.running = true;
+    }
 
     function scanWallpapers() {
         scanProcess.running = true;
     }
 
     Process {
-        id: scanProcess
-        command: ["find", Quickshell.env("HOME") + "/Pictures/Wallpapers",
-                  "-maxdepth", "1", "-type", "f"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.wallpapers = this.text.trim().split("\n").filter(p => p.length > 0);
-            }
-        }
-    }
-
-    // Główna akcja: ustaw tapetę i wygeneruj z niej paletę.
-    // Dwa oddzielne Process, bo to dwie oddzielne odpowiedzialności -
-    // nie chcemy, żeby matugen sam zarządzał ustawianiem tapety
-    // (config.wallpaper.set = false, jak w Kroku 4), bo wtedy
-    // ta logika żyje w jednym miejscu (tutaj), a nie rozjeżdża się
-    // między config.toml matugena i QML.
-    function setWallpaper(path) {
-        root.currentWallpaper = path;
-
-        setWallpaperProcess.command = ["awww", "img", path,
-                                        "--transition-type", "wipe",
-                                        "--transition-duration", "1"];
-        setWallpaperProcess.running = true;
-
-        matugenProcess.command = ["matugen", "image", path, "--source-color-index", "0"];
-        matugenProcess.running = true;
-    }
-
-    Process {
         id: setWallpaperProcess
+        stdout: SplitParser {
+            onRead: data => console.log("[awww stdout]", data)
+        }
+        stderr: SplitParser {
+            onRead: data => console.log("[awww stderr]", data)
+        }
+        onExited: (exitCode, exitStatus) => {
+            console.log("[awww] exited with code", exitCode)
+        }
     }
 
     Process {
         id: matugenProcess
-
-        // onExited zamiast zakładania że proces zawsze się uda -
-        // warto zalogować błąd, bo brak wygenerowanego colors.json
-        // to cichy failure (Colors.qml po prostu zostanie na
-        // starych/domyślnych wartościach, bez żadnego wyjątku).
+        stdout: SplitParser {
+            onRead: data => console.log("[matugen stdout]", data)
+        }
+        stderr: SplitParser {
+            onRead: data => console.log("[matugen stderr]", data)
+        }
         onExited: (exitCode, exitStatus) => {
-            if (exitCode !== 0) {
-                console.warn("matugen failed with exit code", exitCode);
-            }
+            console.log("[matugen] exited with code", exitCode)
         }
     }
 
-    Component.onCompleted: scanWallpapers()
+    Process {
+        id: scanProcess
+        command: ["sh", "-c", "find ~/Pictures/Wallpapers -maxdepth 1 -type f \\( -iname '*.jpg' -o -iname '*.png' -o -iname '*.webp' \\)"]
+        stdout: SplitParser {
+            onRead: data => {
+                let trimmed = data.trim();
+                if (trimmed.length > 0 && !root.wallpapers.includes(trimmed)) {
+                    root.wallpapers.push(trimmed);
+                    root.wallpapersChanged();
+                }
+            }
+        }
+        onExited: {
+            root.wallpapers.sort();
+            root.wallpapersChanged();
+        }
+    }
+
+    Component.onCompleted: {
+        scanWallpapers();
+    }
 }

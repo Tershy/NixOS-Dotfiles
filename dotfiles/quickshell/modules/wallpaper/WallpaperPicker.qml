@@ -1,141 +1,52 @@
-// modules/wallpaper/WallpaperPicker.qml
-
-import Quickshell
-import Quickshell.Wayland
 import QtQuick
+import QtQuick.Layouts
+import Quickshell
+import Quickshell.Hyprland
 import qs.config
-import qs.modules.wallpaper
 
 PanelWindow {
-    id: root
+    id: pickerWindow
 
-    WlrLayershell.layer: WlrLayer.Overlay
-    WlrLayershell.namespace: "wallpaper-picker"
-    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
-
-    anchors {
-        top: true
-        bottom: true
-        left: true
-        right: true
-    }
-
+    visible: WallpaperState.pickerVisible
+    
+    // Wayland automatically centers surfaces without explicit layout anchors when width/height are provided
+    width: 640
+    height: 420
     color: "transparent"
 
-    // Same reasoning as AppLauncher.qml: controlled imperatively via the
-    // Timer + Connections below, not bound directly to
-    // WallpaperState.pickerVisible, so the slide-down animation can
-    // finish before the window actually disappears.
-    visible: false
-
-    Timer {
-        id: hideTimer
-        interval: 500 // must match the transform.y animation duration below
-        onTriggered: root.visible = false
+    // Dismiss when clicking outside the window content
+    HyprlandFocusGrab {
+        active: WallpaperState.pickerVisible
+        onCleared: WallpaperState.hidePicker()
     }
-
-    Connections {
-        target: WallpaperState
-        function onPickerVisibleChanged() {
-            if (WallpaperState.pickerVisible) {
-                hideTimer.stop();
-                root.visible = true;
-            } else {
-                hideTimer.restart();
-            }
-        }
-    }
-
-    // Click outside the panel → close
-    MouseArea {
-        anchors.fill: parent
-        enabled: WallpaperState.pickerVisible
-        onClicked: WallpaperState.hide()
-    }
-
-    // ── Panel geometry ─────────────────────────────────────────────────
-    readonly property int panelW: 720
-    readonly property int panelH: 480
-    readonly property int thumbSize: 160
-    readonly property int thumbSpacing: 12
 
     Rectangle {
-        id: panel
-        width: root.panelW
-        height: root.panelH
-        color: Colors.base
-        radius: 16
-        clip: true
+        anchors.fill: parent
+        color: Colors.surface0
+        radius: 12
+        border.color: Colors.overlay
+        border.width: 1
 
-        anchors.centerIn: parent
-
-        transform: Translate {
-            y: WallpaperState.pickerVisible ? 0 : 24
-            Behavior on y {
-                NumberAnimation {
-                    duration: 500
-                    easing.type: Easing.OutCubic
-                }
-            }
-        }
-
-        opacity: WallpaperState.pickerVisible ? 1 : 0
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 350
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        // Swallow clicks inside the panel so they don't fall through
-        // to the outside-dismiss MouseArea above.
-        MouseArea {
+        ColumnLayout {
             anchors.fill: parent
-            onClicked: {}
-        }
-
-        Column {
-            anchors {
-                top: parent.top
-                topMargin: 16
-                left: parent.left
-                leftMargin: 16
-                right: parent.right
-                rightMargin: 16
-                bottom: parent.bottom
-                bottomMargin: 16
-            }
+            anchors.margins: 16
             spacing: 12
 
             Text {
-                text: "Wallpapers"
+                text: "Select Wallpaper"
                 color: Colors.text
-                font {
-                    pixelSize: 16
-                    family: "Maple Mono NF"
-                    weight: 600
-                }
-            }
-
-            Text {
-                visible: WallpaperState.wallpapers.length === 0
-                text: "No wallpapers found in ~/Pictures/Wallpapers"
-                color: Colors.text
-                opacity: 0.35
-                font {
-                    pixelSize: 12
-                    family: "Maple Mono NF"
-                }
+                font.pixelSize: 16
+                font.bold: true
             }
 
             GridView {
                 id: grid
-                width: parent.width
-                height: parent.height - 40 // leaves room for the header above
+                Layout.fillWidth: true
+                Layout.fillHeight: true
                 clip: true
 
-                cellWidth: root.thumbSize + root.thumbSpacing
-                cellHeight: root.thumbSize + root.thumbSpacing
+                cellWidth: 140
+                cellHeight: 100
 
                 model: WallpaperState.wallpapers
 
@@ -143,26 +54,22 @@ PanelWindow {
                     width: grid.cellWidth
                     height: grid.cellHeight
 
-                    readonly property bool isCurrent: modelData === WallpaperState.currentWallpaper
-
                     Rectangle {
-                        id: thumbFrame
-                        anchors.centerIn: parent
-                        width: root.thumbSize
-                        height: root.thumbSize
-                        radius: 10
-                        color: Colors.surface0
-                        border.width: isCurrent ? 2 : 0
-                        border.color: Colors.sky
-                        clip: true
+                        anchors.fill: parent
+                        anchors.margins: 6
+                        radius: 8
+                        color: Colors.surface1
+                        border.color: WallpaperState.currentWallpaper === modelData ? Colors.sky : "transparent"
+                        border.width: 2
 
                         Image {
                             anchors.fill: parent
+                            anchors.margins: 2
                             source: "file://" + modelData
                             fillMode: Image.PreserveAspectCrop
                             asynchronous: true
-                            smooth: true
-                            mipmap: true
+                            sourceSize.width: 200
+                            sourceSize.height: 120
                         }
 
                         MouseArea {
@@ -170,19 +77,7 @@ PanelWindow {
                             hoverEnabled: true
                             onClicked: {
                                 WallpaperState.setWallpaper(modelData);
-                                WallpaperState.hide();
-                            }
-
-                            Rectangle {
-                                anchors.fill: parent
-                                radius: 10
-                                color: Colors.base
-                                opacity: parent.containsMouse ? 0.15 : 0
-                                Behavior on opacity {
-                                    NumberAnimation {
-                                        duration: 100
-                                    }
-                                }
+                                WallpaperState.hidePicker();
                             }
                         }
                     }

@@ -16,7 +16,7 @@ PanelWindow {
         right: true
     }
     implicitHeight: 32
-    color: Colors.base
+    color: Colors.barBg
     exclusionMode: ExclusionMode.Auto
 
     Item {
@@ -29,19 +29,15 @@ PanelWindow {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
 
-            Pill {
-                Workspaces {}
-              }
-
-            Pill {
-              WallpaperPicker {}
-            }
+            Workspaces {}
+            WallpaperButton {}
         }
-        //CENTER
+        //CENTER 
+
         Pill {
-            id: clockPill
-            anchors.centerIn: parent
-            Clock {}
+          id: clockPill
+          anchors.centerIn: parent
+          Clock {}
         }
 
         //RIGHT SIDE
@@ -50,32 +46,19 @@ PanelWindow {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 10
 
-            Pill {
-                Network {}
-            }
-            Pill {
-                Volume {}
-            }
-            Pill {
-                Battery {}
-            }
+            Network {}
+            Volume {}
+            Battery {}
+            SystemTray {}
 
-            Pill {
-                SystemTray {}
-            }
-
-            Pill {
-                id: powerPill
-
-                PowerMenuButton {
-                    id: powerButton
-                    onClicked: {
-                        const pos = powerPill.mapToItem(bar.contentItem, 0, 0);
-                        powerMenu.anchor.window = bar;
-                        powerMenu.anchor.rect.x = pos.x;
-                        powerMenu.anchor.rect.y = bar.implicitHeight;
-                        powerMenu.visible = !powerMenu.visible;
-                    }
+            PowerMenuButton {
+              id: powerButton
+                onClicked: {
+                  const pos = powerPill.mapToItem(bar.contentItem, 0, 0);
+                  powerMenu.anchor.window = bar;
+                  powerMenu.anchor.rect.x = pos.x;
+                  powerMenu.anchor.rect.y = bar.implicitHeight;
+                  powerMenu.visible = !powerMenu.visible;
                 }
             }
 

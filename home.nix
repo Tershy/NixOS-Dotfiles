@@ -69,6 +69,7 @@
       window_padding_width = "5";
       background_opacity = "0.8";
       allow_remote_control = "yes";
+      confirm_os_window_close = "0";
     };
     extraConfig = ''
       include current-theme.conf
