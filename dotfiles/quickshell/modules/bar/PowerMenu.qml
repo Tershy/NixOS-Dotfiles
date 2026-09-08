@@ -18,7 +18,7 @@ PopupWindow {
     implicitWidth: row.implicitWidth + 24
     implicitHeight: row.implicitHeight + 16
 
-    color: Colors.base
+    color: Colors.barBg
 
     RowLayout {
         id: row

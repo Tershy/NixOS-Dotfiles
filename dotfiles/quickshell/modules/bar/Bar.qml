@@ -51,14 +51,18 @@ PanelWindow {
             Battery {}
             SystemTray {}
 
-            PowerMenuButton {
-              id: powerButton
-                onClicked: {
-                  const pos = powerPill.mapToItem(bar.contentItem, 0, 0);
-                  powerMenu.anchor.window = bar;
-                  powerMenu.anchor.rect.x = pos.x;
-                  powerMenu.anchor.rect.y = bar.implicitHeight;
-                  powerMenu.visible = !powerMenu.visible;
+            Pill{
+              id: powerPill
+
+              PowerMenuButton {
+                id: powerButton
+                  onClicked: {
+                    const pos = powerPill.mapToItem(bar.contentItem, 0, 0);
+                    powerMenu.anchor.window = bar;
+                    powerMenu.anchor.rect.x = pos.x;
+                    powerMenu.anchor.rect.y = bar.implicitHeight;
+                    powerMenu.visible = !powerMenu.visible;
+                  }
                 }
             }
 
