@@ -2,8 +2,12 @@ import QtQuick
 import qs.config
 import qs.modules.wallpaper
 
-Pill {
+Rectangle {
     id: root
+    implicitWidth: 28
+    implicitHeight: 28
+    radius: 6
+    color: "transparent"
 
     Text {
         anchors.centerIn: parent

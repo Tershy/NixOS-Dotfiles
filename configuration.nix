@@ -92,6 +92,7 @@
     hyprshot
 
     matugen
+    satty
 
     kitty
     nwg-look

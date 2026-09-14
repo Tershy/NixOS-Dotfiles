@@ -38,7 +38,7 @@ Singleton {
         setWallpaperProcess.running = true;
 
         matugenProcess.command = [
-            "matugen", "image", path,
+            "matugen", "image", path, "-t", "scheme-vibrant", 
             "--source-color-index", "0"
         ];
         matugenProcess.running = true;
