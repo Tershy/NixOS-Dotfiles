@@ -113,6 +113,7 @@
   ##############################################
 
   programs.fish.enable = true;
+  programs.nix-ld.enable = true;
 
   ##############################################
   ## Nix Settings
@@ -178,6 +179,10 @@
     git
     wget
     gcc
+    unzip
+    gnutar
+    gzip
+    curl
 
     # Apps
     vesktop
