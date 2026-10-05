@@ -5,9 +5,12 @@ import QtQuick
 import QtQuick.Layouts
 import qs.config
 
-RowLayout {
+Item {
     id: root
-    spacing: 6
+
+    // Size the wrapper to the row so the bar still lays this module out by its content.
+    implicitWidth: row.implicitWidth
+    implicitHeight: row.implicitHeight
 
     property var wifiDevice: Networking.devices.values.find(d => d.type === DeviceType.Wifi)
     readonly property bool linked: Networking.wifiEnabled && !!wifiDevice && wifiDevice.connected
@@ -63,39 +66,45 @@ RowLayout {
         }
     }
 
-    Text {
-        text: root.icon
-        color: Networking.wifiEnabled ? Colors.mauve : Colors.surface1
+    RowLayout {
+        id: row
+        anchors.fill: parent
+        spacing: 6
 
-        font {
-            family: "Maple Mono NF"
-            pixelSize: 14
+        Text {
+            text: root.icon
+            color: Networking.wifiEnabled ? Colors.mauve : Colors.surface1
+
+            font {
+                family: "Maple Mono NF"
+                pixelSize: 14
+            }
+        }
+
+        Text {
+            text: {
+                if (!Networking.wifiEnabled)
+                    return "off";
+                if (!root.linked)
+                    return "Disconnected";
+
+                return root.ssid !== "" ? root.ssid : "Connected";
+            }
+
+            color: Colors.text
+
+            font {
+                family: "Maple Mono NF"
+                weight: 650
+            }
         }
     }
 
-    Text {
-        text: {
-            if (!Networking.wifiEnabled)
-                return "off";
-            if (!root.linked)
-                return "Disconnected";
-
-            return root.ssid !== "" ? root.ssid : "Connected";
-        }
-
-        color: Colors.text
-
-        font {
-            family: "Maple Mono NF"
-            weight: 650
-        }
-    }
-
+    // Declared after the layout so it sits on top and receives the clicks.
     MouseArea {
         anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
 
         onClicked: Quickshell.execDetached(["kitty", "-e", "wlctl"])
-        cursorShape: Qt.PointingHandCursor
     }
 }
-
