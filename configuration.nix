@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running 'nixos-help').
 
-{ config, pkgs, pkgs-unstable, fetch, awww, wlctl, zen-browser, ... }:
+{ config, pkgs, pkgs-unstable, fetch, awww, wlctl, zen-browser, spotatui, ... }:
 
 {
   imports = [
@@ -129,6 +129,17 @@
   # services.openssh.enable = true;
 
   ##############################################
+  ## Games/Steam
+  ##############################################
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  };
+
+  ##############################################
   ## Fonts
   ##############################################
 
@@ -149,6 +160,7 @@
     hyprland
     hyprshot
     quickshell
+    qt6.qtdeclarative
     nwg-look
 
     # Theming
@@ -168,13 +180,18 @@
     gcc
 
     # Apps
-    librewolf
     vesktop
+
+    #Gaming
+    steam-tui
+    steamcmd
+    protonup-qt
 
     # Audio / Bluetooth
     pavucontrol
     wiremix
     bluetui
+    spotify
 
     # Graphics diagnostics
     mesa-demos
@@ -185,6 +202,7 @@
     fetch.packages.${pkgs.system}.default
     wlctl.packages.${pkgs.system}.default
     zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+    spotatui.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   ##############################################

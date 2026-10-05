@@ -9,6 +9,10 @@
   };
   programs.home-manager.enable = true;
 
+  # --- user packages ---
+  home.packages = with pkgs; [
+  ];
+
   # --- fish ---
   programs.fish = {
     enable = true;

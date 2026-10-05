@@ -22,11 +22,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    spotatui = {
+      url = "github:LargeModGames/spotatui";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
-  outputs = { self, nixpkgs, home-manager, fetch, awww, wlctl, zen-browser, ... }: {
+  outputs = { self, nixpkgs, home-manager, fetch, awww, wlctl, zen-browser, spotatui, ... }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit fetch awww wlctl zen-browser; };
+      specialArgs = { inherit fetch awww wlctl zen-browser spotatui; };
       modules = [
         ./configuration.nix
       ];
