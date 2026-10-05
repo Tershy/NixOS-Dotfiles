@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Io
 import Quickshell.Networking
 import QtQuick
 import QtQuick.Layouts
@@ -9,55 +10,58 @@ RowLayout {
     spacing: 6
 
     property var wifiDevice: Networking.devices.values.find(d => d.type === DeviceType.Wifi)
-    property var active: wifiDevice ? wifiDevice.networks.values.find(n => n.connected) : null
+    readonly property bool linked: Networking.wifiEnabled && !!wifiDevice && wifiDevice.connected
 
-    readonly property real signal: active ? active.signalStrength : 0
+    property string ssid: ""
+    property real strength: 0
 
     readonly property string icon: {
         if (!Networking.wifiEnabled)
             return String.fromCodePoint(0xF05AA);
-        if (!active)
+        if (!linked)
             return String.fromCodePoint(0xF092D);
 
-        let tier = signal >= 0.75 ? 4 : signal >= 0.50 ? 3 : signal >= 0.25 ? 2 : 1;
+        let tier = strength >= 0.75 ? 4 : strength >= 0.50 ? 3 : strength >= 0.25 ? 2 : 1;
 
         return String.fromCodePoint(0xF091F + (tier - 1) * 3);
     }
 
+    // `--rescan no` reads NetworkManager's cached list instead of triggering a scan.
+    // Terse output looks like "yes:ZTE_C7E9CE:67"; colons inside an SSID are escaped as "\:".
+    Process {
+        id: activeScan
+        command: ["nmcli", "-t", "-f", "ACTIVE,SSID,SIGNAL", "dev", "wifi", "list", "--rescan", "no"]
 
-    Timer {
-        id: debugTimer
-        interval: 4000
-        running: true
-        repeat: true
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const line = text.split("\n").find(l => l.startsWith("yes:"));
 
-        property int ticks: 0
+                if (!line) {
+                    root.ssid = "";
+                    root.strength = 0;
+                    return;
+                }
 
-        onTriggered: {
-            ticks++;
+                const rest = line.slice(4);
+                const cut = rest.lastIndexOf(":");
 
-            const dev = root.wifiDevice;
-            if (!dev) {
-                console.log("[net-debug] no wifi device");
-                return;
+                root.ssid = rest.slice(0, cut).replace(/\\:/g, ":");
+                root.strength = parseInt(rest.slice(cut + 1)) / 100;
             }
-
-            if (ticks === 1) {
-                dev.scannerEnabled = true;
-                console.log("[net-debug] scanner enabled, waiting for results");
-                return;
-            }
-
-            console.log("[net-debug] tick", ticks, "| device connected:", dev.connected, "state:", dev.state, "scanner:", dev.scannerEnabled, "| networks:", dev.networks.values.length);
-
-            for (const n of dev.networks.values)
-                console.log("[net-debug]  ", JSON.stringify(n.name), "connected:", n.connected, "state:", n.state, "signal:", n.signalStrength);
-
-            if (ticks >= 4)
-                running = false;
         }
     }
 
+    Timer {
+        interval: 5000
+        running: root.linked
+        repeat: true
+        triggeredOnStart: true
+
+        onTriggered: {
+            if (!activeScan.running)
+                activeScan.running = true;
+        }
+    }
 
     Text {
         text: root.icon
@@ -73,10 +77,10 @@ RowLayout {
         text: {
             if (!Networking.wifiEnabled)
                 return "off";
-            if (!root.active)
+            if (!root.linked)
                 return "Disconnected";
 
-            return root.active.name;
+            return root.ssid !== "" ? root.ssid : "Connected";
         }
 
         color: Colors.text
