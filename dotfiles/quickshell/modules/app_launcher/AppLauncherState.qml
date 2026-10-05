@@ -11,10 +11,12 @@ Singleton {
     property bool launcherVisible: false
     property var recentIds: []
 
-    property var _settings: Settings {
-        category: "AppLauncher"
-        property string recentIdsSerialized: "[]"
-    }
+   property var _settings: Settings {
+       category: "AppLauncher"
+       location: "file://" + Quickshell.statePath("app-launcher.ini")
+       property string recentIdsSerialized: "[]"
+   }
+
 
     Component.onCompleted: {
         recentIds = JSON.parse(_settings.recentIdsSerialized);

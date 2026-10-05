@@ -10,8 +10,8 @@ PanelWindow {
     visible: WallpaperState.pickerVisible
     
     // Wayland automatically centers surfaces without explicit layout anchors when width/height are provided
-    width: 640
-    height: 420
+    implicitWidth: 640
+    implicitHeight: 420
     color: "transparent"
 
     // Dismiss when clicking outside the window content

@@ -4,77 +4,84 @@ import QtQuick
 import QtQuick.Layouts
 import qs.config
 
-RowLayout {
-    id: root
-    spacing: 7
+Item {
+   id: root
 
-    property var sink: Pipewire.defaultAudioSink
+   implicitWidth: row.implicitWidth
+   implicitHeight: row.implicitHeight
 
-    readonly property bool ready: sink && sink.ready
-    readonly property bool muted: ready && sink.audio.muted
-    readonly property int vol: ready ? Math.round(sink.audio.volume * 100) : 0
+   property var sink: Pipewire.defaultAudioSink
 
-    readonly property string icon: {
-        if (!ready)
-            return String.fromCodePoint(0xF0581);
-        if (muted)
-            return "󰸈";
+   readonly property bool ready: sink && sink.ready
+   readonly property bool muted: ready && sink.audio.muted
+   readonly property int vol: ready ? Math.round(sink.audio.volume * 100) : 0
 
-        if (vol === 0)
-            return String.fromCodePoint(0xF0581);
-        if (vol < 34)
-            return String.fromCodePoint(0xF057F);
-        if (vol < 67)
-            return String.fromCodePoint(0xF0580);
+   readonly property string icon: {
+       if (!ready)
+           return String.fromCodePoint(0xF0581);
+       if (muted)
+           return "󰸈";
 
-        return String.fromCodePoint(0xF057E);
-    }
+       if (vol === 0)
+           return String.fromCodePoint(0xF0581);
+       if (vol < 34)
+           return String.fromCodePoint(0xF057F);
+       if (vol < 67)
+           return String.fromCodePoint(0xF0580);
 
-    Text {
-        text: root.icon
-        color: Colors.yellow
+       return String.fromCodePoint(0xF057E);
+   }
 
-        font {
-            family: "Maple Mono NF"
-            pixelSize: 14
-            weight: 650
-        }
-    }
+   RowLayout {
+       id: row
+       spacing: 7
 
-    Text {
-        text: {
-            if (!root.ready)
-                return "-";
-            if (root.muted)
-                return "Muted";
+       Text {
+           text: root.icon
+           color: Colors.yellow
 
-            return root.vol + "%";
-        }
+           font {
+               family: "Maple Mono NF"
+               pixelSize: 14
+               weight: 650
+           }
+       }
 
-        color: root.muted ? Colors.red : Colors.text
+       Text {
+           text: {
+               if (!root.ready)
+                   return "-";
+               if (root.muted)
+                   return "Muted";
 
-        font {
-            family: "Maple Mono NF"
-            weight: 650
-        }
-    }
+               return root.vol + "%";
+           }
 
-    PwObjectTracker {
-        objects: [root.sink]
-    }
+           color: root.muted ? Colors.red : Colors.text
 
-    MouseArea {
-        anchors.fill: parent
+           font {
+               family: "Maple Mono NF"
+               weight: 650
+           }
+       }
+   }
 
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
+   PwObjectTracker {
+       objects: [root.sink]
+   }
 
-        onClicked: mouse => {
-            if (mouse.button === Qt.LeftButton) {
-                Quickshell.execDetached(["pavucontrol"]);
-            } else if (mouse.button === Qt.RightButton) {
-                Quickshell.execDetached(["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"]);
-            }
-        }
-        cursorShape: Qt.PointingHandCursor
-    }
+   MouseArea {
+       anchors.fill: parent
+
+       acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+       onClicked: mouse => {
+           if (mouse.button === Qt.LeftButton) {
+               Quickshell.execDetached(["pavucontrol"]);
+           } else if (mouse.button === Qt.RightButton) {
+               Quickshell.execDetached(["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"]);
+           }
+       }
+       cursorShape: Qt.PointingHandCursor
+   }
 }

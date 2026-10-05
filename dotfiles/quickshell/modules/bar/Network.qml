@@ -98,3 +98,4 @@ RowLayout {
         cursorShape: Qt.PointingHandCursor
     }
 }
+
