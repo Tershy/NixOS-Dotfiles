@@ -1,118 +1,20 @@
-{ config, pkgs, ... }:
+# User entry point: identity only, every feature lives in ./home
+{ ... }:
+
 {
+  imports = [
+    ./home/shell.nix
+    ./home/kitty.nix
+    ./home/cursor.nix
+    ./home/hyprland.nix
+    ./home/quickshell.nix
+    ./home/matugen.nix
+    ./home/yazi.nix
+  ];
+
   home.username = "tershy";
   home.homeDirectory = "/home/tershy";
   home.stateVersion = "26.05";
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    VISUAL = "nvim";
-  };
+
   programs.home-manager.enable = true;
-
-  # --- user packages ---
-  home.packages = with pkgs; [
-  ];
-
-  # --- fish ---
-  programs.fish = {
-    enable = true;
-    interactiveShellInit = ''
-      if test -f ~/.config/matugen/generated/fish-colors.fish
-        source ~/.config/matugen/generated/fish-colors.fish
-      end
-      fastfetch
-      set fish_greeting
-    '';
-    shellAliases = {
-      fetch = "nix run github:areofyl/fetch";
-
-      nixrebuild = "sudo nixos-rebuild switch";
-      homerebuild = "home-manager switch -b backup --flake /etc/nixos#tershy";
-      dotadd = "cd /etc/nixos && git add -A";
-
-      nixconf = "nvim /etc/nixos/configuration.nix";
-      flakeconf = "nvim /etc/nixos/flake.nix";
-      homeconf = "nvim /etc/nixos/home.nix";
-      dotconf = "nvim /etc/nixos/dotfiles/";
-
-    };
-    functions = {
-      y = ''
-        set tmp (mktemp -t "yazi-cwd.XXXXXX")
-        command yazi $argv --cwd-file="$tmp"
-        if read -z cwd < "$tmp"; and [ "$cwd" != "$PWD" ]; and test -d "$cwd"
-          builtin cd -- "$cwd"
-        end
-        command rm -f -- "$tmp"
-      '';
-    };
-    plugins = [
-      {
-        name = "tide";
-        src = pkgs.fetchFromGitHub {
-          owner = "IlanCosman";
-          repo = "tide";
-          rev = "v6.1.1";
-          sha256 = "sha256-ZyEk/WoxdX5Fr2kXRERQS1U1QHH3oVSyBQvlwYnEYyc=";
-        };
-      }
-    ];
-  };
-
-  # --- kitty ---
-  programs.kitty = {
-    enable = true;
-    font = {
-      name = "MapleMono NF";
-      size = 12.0;
-    };
-    settings = {
-      cursor_shape = "block";
-      cursor_trail = "1";
-      window_margin_width = "5";
-      window_padding_width = "5";
-      background_opacity = "0.8";
-      allow_remote_control = "yes";
-      confirm_os_window_close = "0";
-    };
-    extraConfig = ''
-      include current-theme.conf
-    '';
-  };
-
-  # --- hyprland config files ---
-  # hyprland.lua and its modules are hand-written and stable;
-  # matugen theming will hook in as a separate, ungmanaged colors file
-  # sourced from hyprland.lua, not managed here.
-  xdg.configFile = {
-    "hypr/hyprland.lua".source = ./dotfiles/hypr/hyprland.lua;
-    "hypr/modules/decorations.lua".source = ./dotfiles/hypr/modules/decorations.lua;
-    "hypr/modules/monitors.lua".source = ./dotfiles/hypr/modules/monitors.lua;
-    "hypr/modules/env.lua".source = ./dotfiles/hypr/modules/env.lua;
-    "hypr/modules/windowrules.lua".source = ./dotfiles/hypr/modules/windowrules.lua;
-    "hypr/modules/input.lua".source = ./dotfiles/hypr/modules/input.lua;
-    "hypr/modules/autostart.lua".source = ./dotfiles/hypr/modules/autostart.lua;
-    "hypr/modules/misc.lua".source = ./dotfiles/hypr/modules/misc.lua;
-    "hypr/modules/binds.lua".source = ./dotfiles/hypr/modules/binds.lua;
-    "hypr/modules/layouts.lua".source = ./dotfiles/hypr/modules/layouts.lua;
-
-    # --- yazi ---
-    "yazi/yazi.toml".source = ./dotfiles/yazi/yazi.toml;
-
-    # --- matugen ---
-    "matugen/config.toml".source = ./dotfiles/matugen/config.toml;
-    "matugen/templates/kitty.conf".source = ./dotfiles/matugen/templates/kitty.conf;
-    "matugen/templates/quickshell-colors.json".source = ./dotfiles/matugen/templates/quickshell-colors.json;
-    "matugen/templates/hyprland-colors.lua".source = ./dotfiles/matugen/templates/hyprland-colors.lua;
-    "matugen/templates/fish-colors.fish".source = ./dotfiles/matugen/templates/fish-colors.fish;
-  };
-
-  # --- quickshell ---
-  # Entire config tree managed as one directory; matugen output
-  # (config/generated/colors.json) is included for now but will need
-  # re-evaluation once live regeneration is wired up in Stage 2.
-  xdg.configFile."quickshell" = {
-    source = ./dotfiles/quickshell;
-    recursive = true;
-  };
 }
