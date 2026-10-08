@@ -9,6 +9,7 @@
     ./home/hyprland.nix
     ./home/quickshell.nix
     ./home/matugen.nix
+    ./home/tmux.nix
     ./home/yazi.nix
   ];
 
