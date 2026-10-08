@@ -1,14 +1,17 @@
+//@ pragma UseQApplication
 import Quickshell
 import Quickshell.Io
 import qs.modules.bar
 import qs.modules.app_launcher
 import qs.modules.wallpaper
+import qs.modules.popup
 
 ShellRoot {
     
     Bar {}
     AppLauncher {}
     WallpaperPicker {}
+    PopupHost{}
 
     // Existing launcher IPC
     IpcHandler {

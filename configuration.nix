@@ -49,10 +49,6 @@
     LC_TIME        = "pl_PL.UTF-8";
   };
 
-  environment.sessionVariables = {
-    TZ = "Europe/Warsaw";
-    TZDIR = pkgs.lib.mkForce "${pkgs.tzdata}/share/zoneinfo";
-  };
 
   services.xserver.xkb = {
     layout = "pl";
@@ -190,6 +186,7 @@
     curl
     tzdata
     brotli
+    libnotify
 
     # Apps
     vesktop

@@ -8,25 +8,66 @@ import qs.config
 Item {
     id: root
 
-    // Size the wrapper to the row so the bar still lays this module out by its content.
     implicitWidth: row.implicitWidth
     implicitHeight: row.implicitHeight
 
     property var wifiDevice: Networking.devices.values.find(d => d.type === DeviceType.Wifi)
-    readonly property bool linked: Networking.wifiEnabled && !!wifiDevice && wifiDevice.connected
+    readonly property bool wifiLinked: Networking.wifiEnabled && !!wifiDevice && wifiDevice.connected
+
+    // Set by the device-status poll below. Wired wins over wifi when both are up,
+    // matching NetworkManager's default routing preference.
+    property bool wired: false
 
     property string ssid: ""
     property real strength: 0
 
     readonly property string icon: {
+        if (wired)
+            return String.fromCodePoint(0xF0200);
         if (!Networking.wifiEnabled)
             return String.fromCodePoint(0xF05AA);
-        if (!linked)
+        if (!wifiLinked)
             return String.fromCodePoint(0xF092D);
 
         let tier = strength >= 0.75 ? 4 : strength >= 0.50 ? 3 : strength >= 0.25 ? 2 : 1;
 
         return String.fromCodePoint(0xF091F + (tier - 1) * 3);
+    }
+
+    readonly property string label: {
+        if (wired)
+            return "Ethernet";
+        if (!Networking.wifiEnabled)
+            return "off";
+        if (!wifiLinked)
+            return "Disconnected";
+
+        return ssid !== "" ? ssid : "Connected";
+    }
+
+    // Terse output looks like "ethernet:connected" or "wifi:disconnected".
+    // A cable managed outside NM reports "connected (externally)", hence startsWith.
+    Process {
+        id: deviceScan
+        command: ["nmcli", "-t", "-f", "TYPE,STATE", "dev", "status"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.wired = text.split("\n").some(l => l.startsWith("ethernet:connected"));
+            }
+        }
+    }
+
+    Timer {
+        interval: 5000
+        running: true
+        repeat: true
+        triggeredOnStart: true
+
+        onTriggered: {
+            if (!deviceScan.running)
+                deviceScan.running = true;
+        }
     }
 
     // `--rescan no` reads NetworkManager's cached list instead of triggering a scan.
@@ -54,9 +95,10 @@ Item {
         }
     }
 
+    // No point reading wifi details while a cable is the active connection.
     Timer {
         interval: 5000
-        running: root.linked
+        running: root.wifiLinked && !root.wired
         repeat: true
         triggeredOnStart: true
 
@@ -73,7 +115,7 @@ Item {
 
         Text {
             text: root.icon
-            color: Networking.wifiEnabled ? Colors.mauve : Colors.surface1
+            color: (root.wired || Networking.wifiEnabled) ? Colors.mauve : Colors.surface1
 
             font {
                 family: "Maple Mono NF"
@@ -82,15 +124,7 @@ Item {
         }
 
         Text {
-            text: {
-                if (!Networking.wifiEnabled)
-                    return "off";
-                if (!root.linked)
-                    return "Disconnected";
-
-                return root.ssid !== "" ? root.ssid : "Connected";
-            }
-
+            text: root.label
             color: Colors.text
 
             font {
@@ -100,7 +134,6 @@ Item {
         }
     }
 
-    // Declared after the layout so it sits on top and receives the clicks.
     MouseArea {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
