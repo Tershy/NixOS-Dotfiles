@@ -27,11 +27,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    craft-launcher = {
+      url = "github:storytold/craft-launcher";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+
+
   };
-  outputs = { self, nixpkgs, home-manager, fetch, awww, wlctl, zen-browser, spotatui, ... }: {
+  outputs = { self, nixpkgs, home-manager, fetch, awww, wlctl, zen-browser, spotatui, craft-launcher, ... }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit fetch awww wlctl zen-browser spotatui; };
+      specialArgs = { inherit fetch awww wlctl zen-browser spotatui craft-launcher ; };
       modules = [
         ./configuration.nix
       ];

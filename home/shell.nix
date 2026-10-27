@@ -34,6 +34,30 @@
         end
         command rm -f -- "$tmp"
       '';
+
+      dev = ''
+        set session_name (basename (pwd))
+
+        # If session exists, attach to it
+        if tmux has-session -t $session_name 2>/dev/null
+            tmux attach-session -t $session_name
+            return
+        end
+
+        # Create session running Neovim on the left
+        tmux new-session -d -s $session_name -n "code" "nvim"
+
+        # Split 30% pane on the right running agy with Gemini 3.8
+        tmux split-window -h -p 30 -t $session_name "agy --model gemini-3.8"
+
+        # Focus back on Neovim pane
+        tmux select-pane -t $session_name:1.1
+
+        # Attach to session
+        tmux attach-session -t $session_name
+      '';
+
+
     };
     plugins = [
       {

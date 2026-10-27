@@ -1,4 +1,4 @@
-{ pkgs, fetch, awww, wlctl, zen-browser, spotatui, ... }:
+{ pkgs, fetch, awww, wlctl, zen-browser, spotatui, craft-launcher, ... }:
 
 let
   hostSystem = pkgs.stdenv.hostPlatform.system;
@@ -30,12 +30,6 @@ in
     curl
     wlctl.packages.${hostSystem}.default
 
-    # Development
-    git
-    gcc
-    tree-sitter
-    qt6.qtdeclarative # qmlls for QML LSP
-
     # Hyprland / desktop
     quickshell
     libnotify
@@ -61,8 +55,25 @@ in
     # Apps
     zen-browser.packages.${hostSystem}.default
     vesktop
+    craft-launcher.packages.${hostSystem}.default
 
     # System
     tzdata
+
+    # Development
+    git
+    gcc
+    gdb
+    cmake
+    gnumake
+    clang-tools # provides clangd for LazyVim
+    tree-sitter
+    qt6.qtdeclarative # qmlls for QML LSP
+    wineWow64Packages.stable
+    winetricks
+
+    # IDEs
+    qtcreator
+    jetbrains.clion
   ];
 }
