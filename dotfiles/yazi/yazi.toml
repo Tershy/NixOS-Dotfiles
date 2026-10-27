@@ -5,8 +5,13 @@ wrap = "yes"
 cursor_blink = true
 
 [opener]
+
 edit = [
     { run = 'nvim "$@"', block = true, desc = "Edit with nvim" },
+]
+
+pdf = [
+  { run = 'zen "$@"', orphan = true, desc = "Zen Browser", for = "unix" },
 ]
 
 [open]
@@ -16,4 +21,5 @@ prepend_rules = [
     { url = "*.toml", use = "edit" },
     { url = "*.nix", use = "edit" },
     { url = "*.lua", use = "edit "},
+    { mime = "application/pdf", use = "pdf" },
 ]
