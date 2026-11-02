@@ -20,10 +20,11 @@
       homerebuild = "home-manager switch -b backup --flake /etc/nixos#tershy";
       dotadd = "cd /etc/nixos && git add -A";
 
-      nixconf = "nvim /etc/nixos/modules/";
+      nixconf = "nvim /etc/nixos/";
       flakeconf = "nvim /etc/nixos/flake.nix";
       homeconf = "nvim /etc/nixos/home/";
       dotconf = "nvim /etc/nixos/dotfiles/";
+      infdev = "nvim ~/Documents/Inf/Laby/";
     };
     functions = {
       y = ''
