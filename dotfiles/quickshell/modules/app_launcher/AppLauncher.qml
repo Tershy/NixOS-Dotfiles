@@ -113,9 +113,9 @@ PanelWindow {
 
     // ── Panel geometry ─────────────────────────────────────────────────────
     readonly property int maxVisible: 7
-    readonly property int itemH: 42
-    readonly property int panelW: 440
-    readonly property int panelH: 88 + Math.min(filteredApps.length, maxVisible) * itemH
+    readonly property int itemH: Math.round(42 * Colors.scale)
+    readonly property int panelW: Math.round(440 * Colors.scale)
+    readonly property int panelH: Math.round(88 * Colors.scale) + Math.min(filteredApps.length, maxVisible) * itemH
 
     // Klik poza panelem → zamknij
     MouseArea {
@@ -130,7 +130,7 @@ PanelWindow {
         width: root.panelW
         height: root.panelH
         color: Colors.base
-        radius: 16
+        radius: Math.round(16 * Colors.scale)
         clip: true // trzyma listę wewnątrz podczas animacji wysokości
 
         anchors.horizontalCenter: parent.horizontalCenter
@@ -144,7 +144,7 @@ PanelWindow {
         }
 
         transform: Translate {
-            y: AppLauncherState.launcherVisible ? 0 : root.panelH + 6
+            y: AppLauncherState.launcherVisible ? 0 : root.panelH + Math.round(6 * Colors.scale)
             Behavior on y {
                 NumberAnimation {
                     duration: 500
@@ -164,38 +164,38 @@ PanelWindow {
         Column {
             anchors {
                 top: parent.top
-                topMargin: 12
+                topMargin: Math.round(12 * Colors.scale)
                 left: parent.left
-                leftMargin: 12
+                leftMargin: Math.round(12 * Colors.scale)
                 right: parent.right
-                rightMargin: 12
+                rightMargin: Math.round(12 * Colors.scale)
             }
             spacing: 0
 
             // Drag handle
             Rectangle {
-                width: 36
-                height: 4
-                radius: 2
+                width: Math.round(36 * Colors.scale)
+                height: Math.round(4 * Colors.scale)
+                radius: Math.round(2 * Colors.scale)
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: Colors.overlay
             }
 
             Item {
                 width: 1
-                height: 8
+                height: Math.round(8 * Colors.scale)
             }
 
             // ── Search box ─────────────────────────────────────────────
             Rectangle {
                 width: parent.width
-                height: 44
-                radius: 10
+                height: Math.round(44 * Colors.scale)
+                radius: Math.round(10 * Colors.scale)
                 color: Colors.surface0
 
                 Rectangle {
                     anchors.fill: parent
-                    radius: 10
+                    radius: Math.round(10 * Colors.scale)
                     color: "transparent"
                     border.color: Colors.sky
                     border.width: 1
@@ -210,13 +210,13 @@ PanelWindow {
                 Row {
                     anchors {
                         fill: parent
-                        leftMargin: 14
-                        rightMargin: 14
+                        leftMargin: Math.round(14 * Colors.scale)
+                        rightMargin: Math.round(14 * Colors.scale)
                     }
-                    spacing: 10
+                    spacing: Math.round(10 * Colors.scale)
 
                     Item {
-                        width: parent.width - 40
+                        width: parent.width - Math.round(40 * Colors.scale)
                         height: parent.height
 
                         Text {
@@ -225,7 +225,7 @@ PanelWindow {
                             color: Colors.text
                             opacity: 0.28
                             font {
-                                pixelSize: 13
+                                pixelSize: Math.round(13 * Colors.scale)
                                 family: "Maple Mono NF"
                             }
                             verticalAlignment: Text.AlignVCenter
@@ -238,7 +238,7 @@ PanelWindow {
                             color: Colors.text
                             selectionColor: root.accentFill
                             font {
-                                pixelSize: 13
+                                pixelSize: Math.round(13 * Colors.scale)
                                 family: "Maple Mono NF"
                                 weight: 500
                             }
@@ -270,7 +270,7 @@ PanelWindow {
 
             Item {
                 width: 1
-                height: 8
+                height: Math.round(8 * Colors.scale)
             }
 
             // ── App list ───────────────────────────────────────────────
@@ -299,7 +299,7 @@ PanelWindow {
                     color: Colors.text
                     opacity: 0.28
                     font {
-                        pixelSize: 13
+                        pixelSize: Math.round(13 * Colors.scale)
                         family: "Maple Mono NF"
                     }
                 }
@@ -315,10 +315,10 @@ PanelWindow {
                     Rectangle {
                         anchors {
                             fill: parent
-                            topMargin: 2
-                            bottomMargin: 2
+                            topMargin: Math.round(2 * Colors.scale)
+                            bottomMargin: Math.round(2 * Colors.scale)
                         }
-                        radius: 10
+                        radius: Math.round(10 * Colors.scale)
                         color: appRow.sel ? root.accentFill : "transparent"
                         Behavior on color {
                             ColorAnimation {
@@ -329,16 +329,16 @@ PanelWindow {
                         Row {
                             anchors {
                                 fill: parent
-                                leftMargin: 8
-                                rightMargin: 8
+                                leftMargin: Math.round(8 * Colors.scale)
+                                rightMargin: Math.round(8 * Colors.scale)
                             }
-                            spacing: 12
+                            spacing: Math.round(12 * Colors.scale)
 
                             // Icon bubble
                             Rectangle {
-                                width: 36
-                                height: 36
-                                radius: 9
+                                width: Math.round(36 * Colors.scale)
+                                height: Math.round(36 * Colors.scale)
+                                radius: Math.round(9 * Colors.scale)
                                 anchors.verticalCenter: parent.verticalCenter
                                 color: appRow.sel ? root.accentIcon : Colors.surface1
                                 Behavior on color {
@@ -350,8 +350,8 @@ PanelWindow {
                                 Image {
                                     id: appIcon
                                     anchors.centerIn: parent
-                                    width: 22
-                                    height: 22
+                                    width: Math.round(22 * Colors.scale)
+                                    height: Math.round(22 * Colors.scale)
                                     source: modelData.icon !== "" ? Quickshell.iconPath(modelData.icon, true) : ""
                                     smooth: true
                                     mipmap: true
@@ -362,7 +362,7 @@ PanelWindow {
                                     visible: appIcon.status !== Image.Ready
                                     text: modelData.name.charAt(0).toUpperCase()
                                     font {
-                                        pixelSize: 15
+                                        pixelSize: Math.round(15 * Colors.scale)
                                         family: "Maple Mono NF"
                                         weight: 700
                                     }
@@ -378,12 +378,12 @@ PanelWindow {
                             // Name + subtitle
                             Column {
                                 anchors.verticalCenter: parent.verticalCenter
-                                spacing: 2
+                                spacing: Math.round(2 * Colors.scale)
 
                                 Text {
                                     text: modelData.name
                                     font {
-                                        pixelSize: 13
+                                        pixelSize: Math.round(13 * Colors.scale)
                                         family: "Maple Mono NF"
                                         weight: appRow.sel ? 600 : 500
                                     }
@@ -396,14 +396,14 @@ PanelWindow {
                                 }
 
                                 Row {
-                                    spacing: 6
+                                    spacing: Math.round(6 * Colors.scale)
                                     visible: appRow.isRecent || modelData.genericName !== ""
 
                                     Rectangle {
                                         visible: appRow.isRecent
-                                        width: recentLabel.width + 8
-                                        height: 14
-                                        radius: 4
+                                        width: recentLabel.width + Math.round(8 * Colors.scale)
+                                        height: Math.round(14 * Colors.scale)
+                                        radius: Math.round(4 * Colors.scale)
                                         color: Qt.rgba(Colors.sky.r, Colors.sky.g, Colors.sky.b, 0.22)
                                         anchors.verticalCenter: parent.verticalCenter
 
@@ -412,7 +412,7 @@ PanelWindow {
                                             anchors.centerIn: parent
                                             text: "recent"
                                             font {
-                                                pixelSize: 9
+                                                pixelSize: Math.round(9 * Colors.scale)
                                                 family: "Maple Mono NF"
                                             }
                                             color: Colors.sky
@@ -423,7 +423,7 @@ PanelWindow {
                                         visible: modelData.genericName !== ""
                                         text: modelData.genericName
                                         font {
-                                            pixelSize: 11
+                                            pixelSize: Math.round(11 * Colors.scale)
                                             family: "Maple Mono NF"
                                         }
                                         color: Colors.text
@@ -452,7 +452,7 @@ PanelWindow {
 
             Item {
                 width: 1
-                height: 4
+                height: Math.round(4 * Colors.scale)
             }
         }
     }

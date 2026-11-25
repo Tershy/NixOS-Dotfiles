@@ -3,10 +3,11 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.UPower
+import qs.config
 
 RowLayout {
     id: root
-    spacing: 6
+    spacing: Math.round(6 * Colors.scale)
 
     property var battery: UPower.displayDevice
     property bool charging: battery.state === UPowerDeviceState.Charging
@@ -56,7 +57,7 @@ RowLayout {
 
         font {
             family: "Maple Mono NF"
-            pixelSize: 14
+            pixelSize: Math.round(14 * Colors.scale)
         }
     }
 
@@ -67,6 +68,7 @@ RowLayout {
         font {
             family: "Maple Mono NF"
             weight: 650
+            pixelSize: Math.round(13 * Colors.scale)
         }
     }
 }

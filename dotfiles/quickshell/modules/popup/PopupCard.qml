@@ -28,7 +28,7 @@ Item {
     property bool _leaving: false
     property string _reason: "timeout"
 
-    width: 360
+    width: Math.round(360 * Colors.scale)
     height: card.height * collapse
     opacity: 1 - slide
 
@@ -102,11 +102,11 @@ Item {
 
     Rectangle {
         id: card
-        x: root.slide * (root.width + 24)
+        x: root.slide * (root.width + Math.round(24 * Colors.scale))
         width: root.width
-        implicitHeight: row.implicitHeight + 28
+        implicitHeight: row.implicitHeight + Math.round(28 * Colors.scale)
         height: implicitHeight
-        radius: 16
+        radius: Math.round(16 * Colors.scale)
         color: Colors.barBg
         border.width: 1
         border.color: Qt.alpha(Colors.text, 0.10)
@@ -125,20 +125,20 @@ Item {
                 left: parent.left
                 right: parent.right
                 top: parent.top
-                margins: 14
+                margins: Math.round(14 * Colors.scale)
             }
-            spacing: 12
+            spacing: Math.round(12 * Colors.scale)
 
             Item {
-                Layout.preferredWidth: 40
-                Layout.preferredHeight: 40
+                Layout.preferredWidth: Math.round(40 * Colors.scale)
+                Layout.preferredHeight: Math.round(40 * Colors.scale)
                 Layout.alignment: Qt.AlignTop
 
                 Image {
                     anchors.fill: parent
                     visible: root.imageSource !== ""
                     source: root.imageSource
-                    sourceSize: Qt.size(80, 80)
+                    sourceSize: Qt.size(Math.round(80 * Colors.scale), Math.round(80 * Colors.scale))
                     fillMode: Image.PreserveAspectFit
                     asynchronous: true
                 }
@@ -148,19 +148,19 @@ Item {
                     text: root.glyph
                     color: root.accent
                     font.family: "Maple Mono NF"
-                    font.pixelSize: 30
+                    font.pixelSize: Math.round(30 * Colors.scale)
                 }
             }
 
             ColumnLayout {
                 Layout.fillWidth: true
-                spacing: 2
+                spacing: Math.round(2 * Colors.scale)
 
                 Text {
                     Layout.fillWidth: true
                     text: root.title
                     color: Colors.text
-                    font.pixelSize: 14
+                    font.pixelSize: Math.round(14 * Colors.scale)
                     font.weight: Font.DemiBold
                     elide: Text.ElideRight
                     maximumLineCount: 1
@@ -170,7 +170,7 @@ Item {
                     visible: root.body !== ""
                     text: root.body
                     color: Colors.subtext0
-                    font.pixelSize: 12
+                    font.pixelSize: Math.round(12 * Colors.scale)
                     wrapMode: Text.Wrap
                     maximumLineCount: 3
                     elide: Text.ElideRight

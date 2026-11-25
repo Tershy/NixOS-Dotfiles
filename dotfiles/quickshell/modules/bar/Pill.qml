@@ -9,8 +9,8 @@ Rectangle {
 
     default property alias content: contentRow.children
 
-    property int horizontalPadding: 10
-    property int verticalPadding: 4
+    property int horizontalPadding: Math.round(10 * Colors.scale)
+    property int verticalPadding: Math.round(4 * Colors.scale)
 
     implicitWidth: contentRow.implicitWidth + horizontalPadding * 2
     implicitHeight: contentRow.implicitHeight + verticalPadding * 2
@@ -21,6 +21,6 @@ Rectangle {
     Row {
         id: contentRow
         anchors.centerIn: parent
-        spacing: 6
+        spacing: Math.round(6 * Colors.scale)
     }
 }

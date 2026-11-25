@@ -8,13 +8,13 @@ import qs.config
 
 RowLayout {
     id: root
-    spacing: 4
+    spacing: Math.round(4 * Colors.scale)
 
     // Placeholder to maintain minimum size when no system tray items are present
     Item {
         visible: SystemTray.items.values.length === 0
-        Layout.preferredWidth: 24
-        Layout.preferredHeight: 20
+        Layout.preferredWidth: Math.round(24 * Colors.scale)
+        Layout.preferredHeight: Math.round(20 * Colors.scale)
     }
 
     Repeater {
@@ -24,8 +24,8 @@ RowLayout {
             id: slot
             required property var modelData
 
-            Layout.preferredWidth: 24
-            Layout.preferredHeight: 18
+            Layout.preferredWidth: Math.round(24 * Colors.scale)
+            Layout.preferredHeight: Math.round(18 * Colors.scale)
 
             // Opens the item's native menu just below the icon.
             // display() needs the window (not an Item) and window-relative coords.
@@ -39,7 +39,7 @@ RowLayout {
             Rectangle {
                 id: bg
                 anchors.fill: parent
-                radius: 2
+                radius: Math.max(1, Math.round(2 * Colors.scale))
                 color: "transparent"
 
                 MouseArea {
@@ -67,8 +67,8 @@ RowLayout {
 
                 Image {
                     source: slot.modelData.icon
-                    width: 16
-                    height: 16
+                    width: Math.round(16 * Colors.scale)
+                    height: Math.round(16 * Colors.scale)
                     anchors.centerIn: parent
                     fillMode: Image.PreserveAspectFit
                     smooth: true

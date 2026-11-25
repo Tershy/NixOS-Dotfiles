@@ -10,8 +10,8 @@ PanelWindow {
     visible: WallpaperState.pickerVisible
     
     // Wayland automatically centers surfaces without explicit layout anchors when width/height are provided
-    implicitWidth: 640
-    implicitHeight: 420
+    implicitWidth: Math.round(640 * Colors.scale)
+    implicitHeight: Math.round(420 * Colors.scale)
     color: "transparent"
 
     // Dismiss when clicking outside the window content
@@ -23,19 +23,19 @@ PanelWindow {
     Rectangle {
         anchors.fill: parent
         color: Colors.surface0
-        radius: 12
+        radius: Math.round(12 * Colors.scale)
         border.color: Colors.overlay
         border.width: 1
 
         ColumnLayout {
             anchors.fill: parent
-            anchors.margins: 16
-            spacing: 12
+            anchors.margins: Math.round(16 * Colors.scale)
+            spacing: Math.round(12 * Colors.scale)
 
             Text {
                 text: "Select Wallpaper"
                 color: Colors.text
-                font.pixelSize: 16
+                font.pixelSize: Math.round(16 * Colors.scale)
                 font.bold: true
             }
 
@@ -45,8 +45,8 @@ PanelWindow {
                 Layout.fillHeight: true
                 clip: true
 
-                cellWidth: 140
-                cellHeight: 100
+                cellWidth: Math.round(140 * Colors.scale)
+                cellHeight: Math.round(100 * Colors.scale)
 
                 model: WallpaperState.wallpapers
 
@@ -56,20 +56,20 @@ PanelWindow {
 
                     Rectangle {
                         anchors.fill: parent
-                        anchors.margins: 6
-                        radius: 8
+                        anchors.margins: Math.round(6 * Colors.scale)
+                        radius: Math.round(8 * Colors.scale)
                         color: Colors.surface1
                         border.color: WallpaperState.currentWallpaper === modelData ? Colors.sky : "transparent"
                         border.width: 2
 
                         Image {
                             anchors.fill: parent
-                            anchors.margins: 2
+                            anchors.margins: Math.round(2 * Colors.scale)
                             source: "file://" + modelData
                             fillMode: Image.PreserveAspectCrop
                             asynchronous: true
-                            sourceSize.width: 200
-                            sourceSize.height: 120
+                            sourceSize.width: Math.round(200 * Colors.scale)
+                            sourceSize.height: Math.round(120 * Colors.scale)
                         }
 
                         MouseArea {

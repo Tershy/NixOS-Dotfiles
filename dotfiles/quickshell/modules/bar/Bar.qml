@@ -15,14 +15,14 @@ PanelWindow {
         left: true
         right: true
     }
-    implicitHeight: 32
+    implicitHeight: Math.round(32 * Colors.scale)
     color: Colors.barBg
     exclusionMode: ExclusionMode.Auto
 
     Item {
         anchors.fill: parent
-        anchors.leftMargin: 5
-        anchors.rightMargin: 5
+        anchors.leftMargin: Math.round(5 * Colors.scale)
+        anchors.rightMargin: Math.round(5 * Colors.scale)
 
         //LEFT SIDE
         RowLayout {
@@ -44,11 +44,14 @@ PanelWindow {
         RowLayout {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            spacing: 10
+            spacing: Math.round(10 * Colors.scale)
 
             Network {}
             Volume {}
             Battery {}
+            ScaleButton {
+                onClicked: scalePopup.shown = !scalePopup.shown
+            }
             SystemTray {}
 
             Pill {
@@ -63,6 +66,10 @@ PanelWindow {
 
             PowerMenu {
                 id: powerMenu
+            }
+
+            ScalePopup {
+                id: scalePopup
             }
         }
     }

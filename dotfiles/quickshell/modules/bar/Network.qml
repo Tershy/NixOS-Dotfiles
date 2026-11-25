@@ -111,7 +111,7 @@ Item {
     RowLayout {
         id: row
         anchors.fill: parent
-        spacing: 6
+        spacing: Math.round(6 * Colors.scale)
 
         Text {
             text: root.icon
@@ -119,7 +119,7 @@ Item {
 
             font {
                 family: "Maple Mono NF"
-                pixelSize: 14
+                pixelSize: Math.round(14 * Colors.scale)
             }
         }
 
@@ -130,6 +130,7 @@ Item {
             font {
                 family: "Maple Mono NF"
                 weight: 650
+                pixelSize: Math.round(13 * Colors.scale)
             }
         }
     }

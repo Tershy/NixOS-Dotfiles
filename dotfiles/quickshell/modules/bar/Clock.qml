@@ -12,7 +12,7 @@ Text {
         family: "Maple Mono NF"
         weight: 650
         letterSpacing: 0
-        pixelSize: 13
+        pixelSize: Math.round(13 * Colors.scale)
     }
 
     SystemClock {

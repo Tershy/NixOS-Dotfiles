@@ -70,7 +70,7 @@ PanelWindow {
 
         RowLayout {
             anchors.centerIn: parent
-            spacing: 32
+            spacing: Math.round(32 * Colors.scale)
 
             Repeater {
                 model: [
@@ -84,9 +84,9 @@ PanelWindow {
                     id: btn
                     required property var modelData
 
-                    implicitWidth: 120
-                    implicitHeight: 120
-                    radius: 28
+                    implicitWidth: Math.round(120 * Colors.scale)
+                    implicitHeight: Math.round(120 * Colors.scale)
+                    radius: Math.round(28 * Colors.scale)
                     color: hover.containsMouse
                         ? Qt.alpha(modelData.danger ? Colors.red : Colors.text, 0.18)
                         : Qt.alpha(Colors.text, 0.08)
@@ -97,19 +97,19 @@ PanelWindow {
 
                     ColumnLayout {
                         anchors.centerIn: parent
-                        spacing: 8
+                        spacing: Math.round(8 * Colors.scale)
 
                         Text {
                             Layout.alignment: Qt.AlignHCenter
                             text: btn.modelData.icon
                             font.family: "Maple Mono NF"
-                            font.pixelSize: 40
+                            font.pixelSize: Math.round(40 * Colors.scale)
                             color: btn.modelData.danger ? Colors.red : Colors.text
                         }
                         Text {
                             Layout.alignment: Qt.AlignHCenter
                             text: btn.modelData.label
-                            font.pixelSize: 14
+                            font.pixelSize: Math.round(14 * Colors.scale)
                             color: Colors.text
                         }
                     }

@@ -16,7 +16,7 @@ Item {
         text: "󰐥"
         font.family: "Maple Mono NF"
         color: Colors.red
-        font.pixelSize: 14
+        font.pixelSize: Math.round(14 * Colors.scale)
         font.weight: 600
     }
 

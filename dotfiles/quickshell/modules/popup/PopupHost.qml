@@ -22,12 +22,12 @@ PanelWindow {
         right: true
     }
     margins {
-        top: 40   // bar is 32px + 8px gap
+        top: Math.round(40 * Colors.scale)   // bar is 32px + 8px gap
     }
     // Fixed size so the Wayland surface isn't resized every animation frame;
     // the mask below makes everything outside the cards click-through.
-    implicitWidth: 372
-    implicitHeight: 640
+    implicitWidth: Math.round(372 * Colors.scale)
+    implicitHeight: Math.round(640 * Colors.scale)
     exclusionMode: ExclusionMode.Ignore
     color: "transparent"
     visible: cards.count > 0

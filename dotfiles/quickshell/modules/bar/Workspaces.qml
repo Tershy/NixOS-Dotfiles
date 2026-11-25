@@ -6,7 +6,7 @@ import qs.config
 
 Row {
     id: wsRow
-    spacing: 7 // The Row natively manages the spacing between visible items
+    spacing: Math.round(7 * Colors.scale) // The Row natively manages the spacing between visible items
 
     Repeater {
         model: 10 // Pre-allocate up to 10 workspaces. Adjust if you use more.
@@ -24,7 +24,7 @@ Row {
 
             // The Roll-out Magic:
             // If the workspace exists, target the full width. If it is closed, target 0.
-            width: exists ? (label.implicitWidth + 14) : 0
+            width: exists ? (label.implicitWidth + Math.round(14 * Colors.scale)) : 0
             height: label.implicitHeight
 
             // Hide entirely once the width hits 0 so the Row collapses the 7px spacing seamlessly
@@ -51,9 +51,9 @@ Row {
             Rectangle {
                 id: wsButton
                 anchors.centerIn: parent
-                width: label.implicitWidth + 14
+                width: label.implicitWidth + Math.round(14 * Colors.scale)
                 height: label.implicitHeight
-                radius: 6
+                radius: Math.round(6 * Colors.scale)
 
                 color: isActive ? Colors.overlay : Colors.surface0
 
@@ -71,7 +71,7 @@ Row {
 
                     font {
                         family: "Maple Mono NF"
-                        pixelSize: 14
+                        pixelSize: Math.round(14 * Colors.scale)
                         weight: 500
                     }
                 }

@@ -34,7 +34,7 @@ Item {
 
    RowLayout {
        id: row
-       spacing: 7
+       spacing: Math.round(7 * Colors.scale)
 
        Text {
            text: root.icon
@@ -42,7 +42,7 @@ Item {
 
            font {
                family: "Maple Mono NF"
-               pixelSize: 14
+               pixelSize: Math.round(14 * Colors.scale)
                weight: 650
            }
        }
@@ -62,6 +62,7 @@ Item {
            font {
                family: "Maple Mono NF"
                weight: 650
+               pixelSize: Math.round(13 * Colors.scale)
            }
        }
    }

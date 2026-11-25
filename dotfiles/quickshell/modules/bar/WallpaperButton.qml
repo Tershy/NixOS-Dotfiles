@@ -4,15 +4,15 @@ import qs.modules.wallpaper
 
 Rectangle {
     id: root
-    implicitWidth: 28
-    implicitHeight: 28
-    radius: 6
+    implicitWidth: Math.round(28 * Colors.scale)
+    implicitHeight: Math.round(28 * Colors.scale)
+    radius: Math.round(6 * Colors.scale)
     color: "transparent"
 
     Text {
         anchors.centerIn: parent
         text: "󰸉"
-        font.pixelSize: 14
+        font.pixelSize: Math.round(14 * Colors.scale)
         color: Colors.text
     }
 

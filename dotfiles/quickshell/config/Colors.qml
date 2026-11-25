@@ -3,6 +3,7 @@ pragma Singleton
 import Quickshell
 import Quickshell.Io
 import QtQuick
+import QtCore
 
 Singleton {
     id: root
@@ -15,6 +16,27 @@ Singleton {
         blockLoading: true
         watchChanges: true
         onFileChanged: this.reload()
+      }
+
+    // Persistent scale — survives restarts without homerebuild.
+    // Writes to ~/.local/state/quickshell/default/scale.ini
+    Settings {
+        id: scaleSettings
+        category: "Scale"
+        location: "file://" + Quickshell.statePath("scale.ini")
+        property real savedScale: -1
+    }
+
+    // If the user has set a scale via the popup it takes priority;
+    // otherwise fall back to colors.json, then 1.0.
+    readonly property real scale: scaleSettings.savedScale > 0
+        ? scaleSettings.savedScale
+        : (_data.scale ?? 1.0)
+
+    function setScale(value) {
+        // Clamp to 50-200 %, round to nearest 5 %
+        scaleSettings.savedScale = Math.max(0.5, Math.min(2.0,
+            Math.round(value * 20) / 20));
     }
 
     // Recomputes automatically whenever colorsFile.text() changes
